@@ -7,38 +7,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Socis {
-  sociId   Int      @id @default(autoincrement())
-  nom      String
-  cognoms  String
-  dni      String   @db.VarChar(9)
-  email    String?
-  actiu    Boolean  @default(true)
-  dataAlta DateTime @default(now())
+model Soci {
+  sociId     Int            @id @default(autoincrement())
+  nom        String
+  cognoms    String
+  dni        String         @db.VarChar(9)
+  email      String?
+  actiu      Boolean        @default(true)
+  dataAlta   DateTime       @default(now())
+  comissions ComissioSoci[]
 }
 
-model Quotes {
- quotaId Int @id @default(autoincrement())
-quota String
-}
-model QuotesSocis {
-  quotaSociId Int @id @default(autoincrement())
-  sociId  Int
-  quotaId Int
-  quantitat Int
-  iban String @db.VarChar(24)
-
+model Quota {
+  quotaId Int    @id @default(autoincrement())
+  quota   String
 }
 
-model Comissions {
-  comissioId Int @id @default(autoincrement())
-  comissio String
+model QuotaSoci {
+  quotaSociId Int    @id @default(autoincrement())
+  sociId      Int
+  quotaId     Int
+  quantitat   Int
+  iban        String @db.VarChar(24)
 }
 
-model ComissionsSocis {
-  comissioSocisId Int @id @default(autoincrement())
-  comissioId Int
-  sociId Int
+model Comissio {
+  comissioId Int    @id @default(autoincrement())
+  comissio   String
 }
 
-
+model ComissioSoci {
+  comissioSocisId Int  @id @default(autoincrement())
+  comissioId      Int
+  sociId          Int
+  sociComissio    Soci @relation(fields: [sociId], references: [sociId])
+}
