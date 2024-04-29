@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model socis {
+  idsoci   Int       @id @default(autoincrement())
+  nom      String   @db.VarChar(100)
+  cognoms  String   @db.VarChar(200)
+  dni      String   @db.VarChar(9)
+  email    String?   @db.VarChar(255)
+  data_alta DateTime @db.Date
+
+}
