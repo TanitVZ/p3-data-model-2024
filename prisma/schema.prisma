@@ -7,13 +7,38 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model socis {
-  idsoci   Int       @id @default(autoincrement())
-  nom      String   @db.VarChar(100)
-  cognoms  String   @db.VarChar(200)
+model Socis {
+  sociId   Int      @id @default(autoincrement())
+  nom      String
+  cognoms  String
   dni      String   @db.VarChar(9)
-  email    String?   @db.VarChar(255)
-  data_alta DateTime @db.Date
+  email    String?
+  actiu    Boolean  @default(true)
+  dataAlta DateTime @default(now())
+}
+
+model Quotes {
+ quotaId Int @id @default(autoincrement())
+quota String
+}
+model QuotesSocis {
+  quotaSociId Int @id @default(autoincrement())
+  sociId  Int
+  quotaId Int
+  quantitat Int
+  iban String @db.VarChar(24)
 
 }
+
+model Comissions {
+  comissioId Int @id @default(autoincrement())
+  comissio String
+}
+
+model ComissionsSocis {
+  comissioSocisId Int @id @default(autoincrement())
+  comissioId Int
+  sociId Int
+}
+
+
