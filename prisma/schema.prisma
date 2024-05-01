@@ -22,7 +22,7 @@ model Soci {
 
 model Quota {
   quotaId   Int         @id @default(autoincrement())
-  desc      String      
+  nom      String      @unique
   quotaSoci QuotaSoci[]
 }
 
@@ -38,7 +38,7 @@ model QuotaSoci {
 
 model Comissio {
   comissioId Int    @id @default(autoincrement())
-  desc       String 
+  nom       String  @unique 
 }
 
 model ComissioSoci {
