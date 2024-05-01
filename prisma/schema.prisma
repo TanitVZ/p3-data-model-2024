@@ -16,34 +16,35 @@ model Soci {
   actiu       Boolean        @default(true)
   dataAlta    DateTime       @default(now())
   comissions  ComissioSoci[]
-  quotaSoci   QuotaSoci      @relation(fields: [quotaSociId], references: [quotaSociId])
-  quotaSociId Int
+  quotaSoci   QuotaSoci?
+
 }
 
 model Quota {
-  quotaId   Int         @id @default(autoincrement())
-  nom      String      @unique
-  quotaSoci QuotaSoci[]
+  quotaId   Int        @id @default(autoincrement())
+  nom       String     @unique
+  quotaSoci QuotaSoci?
 }
 
 model QuotaSoci {
   quotaSociId Int    @id @default(autoincrement())
-  sociId      Int    
   quotaId     Int    @unique
   quantitat   Int
   iban        String @db.VarChar(24)
   quota       Quota  @relation(fields: [quotaId], references: [quotaId])
-  soci Soci[]
+  soci        Soci  @relation(fields: [sociId], references: [sociId])
+  sociId      Int @unique
 }
 
 model Comissio {
-  comissioId Int    @id @default(autoincrement())
-  nom       String  @unique 
+  comissioId   Int            @id @default(autoincrement())
+  nom          String         @unique
+  ComissioSoci ComissioSoci[]
 }
 
 model ComissioSoci {
-  comissioSocisId Int  @id @default(autoincrement())
+  comissioSocisId Int      @id @default(autoincrement())
+  comissio        Comissio @relation(fields: [comissioId], references: [comissioId])
   comissioId      Int
-  sociId          Int
-  sociComissio    Soci @relation(fields: [sociId], references: [sociId])
+  soci            Soci[]   
 }
