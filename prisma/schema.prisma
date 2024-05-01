@@ -8,32 +8,37 @@ datasource db {
 }
 
 model Soci {
-  sociId     Int            @id @default(autoincrement())
-  nom        String
-  cognoms    String
-  dni        String         @db.VarChar(9)
-  email      String?
-  actiu      Boolean        @default(true)
-  dataAlta   DateTime       @default(now())
-  comissions ComissioSoci[]
+  sociId      Int            @id @default(autoincrement())
+  nom         String
+  cognoms     String
+  dni         String         @db.VarChar(9)
+  email       String?
+  actiu       Boolean        @default(true)
+  dataAlta    DateTime       @default(now())
+  comissions  ComissioSoci[]
+  quotaSoci   QuotaSoci      @relation(fields: [quotaSociId], references: [quotaSociId])
+  quotaSociId Int
 }
 
 model Quota {
-  quotaId Int    @id @default(autoincrement())
-  quota   String
+  quotaId   Int         @id @default(autoincrement())
+  desc      String      
+  quotaSoci QuotaSoci[]
 }
 
 model QuotaSoci {
   quotaSociId Int    @id @default(autoincrement())
-  sociId      Int
-  quotaId     Int
+  sociId      Int    
+  quotaId     Int    @unique
   quantitat   Int
   iban        String @db.VarChar(24)
+  quota       Quota  @relation(fields: [quotaId], references: [quotaId])
+  soci Soci[]
 }
 
 model Comissio {
   comissioId Int    @id @default(autoincrement())
-  comissio   String
+  desc       String 
 }
 
 model ComissioSoci {
