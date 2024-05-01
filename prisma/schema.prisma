@@ -18,20 +18,20 @@ model Soci {
   comissions  ComissioSoci[]
   quotaSoci   QuotaSoci?
 
-}
+} 
 
 model Quota {
   quotaId   Int        @id @default(autoincrement())
   nom       String     @unique
-  quotaSoci QuotaSoci?
+  quotaSoci QuotaSoci[]
 }
 
 model QuotaSoci {
   quotaSociId Int    @id @default(autoincrement())
-  quotaId     Int    @unique
   quantitat   Int
   iban        String @db.VarChar(24)
   quota       Quota  @relation(fields: [quotaId], references: [quotaId])
+  quotaId     Int    
   soci        Soci  @relation(fields: [sociId], references: [sociId])
   sociId      Int @unique
 }
