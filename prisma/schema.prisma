@@ -39,12 +39,13 @@ model QuotaSoci {
 model Comissio {
   comissioId   Int            @id @default(autoincrement())
   nom          String         @unique
-  ComissioSoci ComissioSoci[]
+  comissioSoci ComissioSoci[]
 }
 
 model ComissioSoci {
   comissioSocisId Int      @id @default(autoincrement())
   comissio        Comissio @relation(fields: [comissioId], references: [comissioId])
   comissioId      Int
-  soci            Soci[]   
+  soci            Soci   @relation(fields: [sociId], references: [sociId])
+  sociId          Int
 }
