@@ -271,12 +271,12 @@ COPY public."Quota" ("quotaId", nom) FROM stdin;
 --
 
 COPY public."QuotaSoci" ("quotaSociId", quantitat, iban, "quotaId", "sociId") FROM stdin;
-1	60	ES4302378064573129048238	1	1
 2	20	ES1520854312671386290654	3	2
 3	15	ES9031834039978422822928	2	3
 4	15	ES1520956067347973178439	2	4
 5	30	ES8502412465310302229896	2	5
 10	30	aaaaaaa	3	6
+1	60	ES4302378064573129048238	1	1
 \.
 
 
@@ -285,12 +285,13 @@ COPY public."QuotaSoci" ("quotaSociId", quantitat, iban, "quotaId", "sociId") FR
 --
 
 COPY public."Soci" ("sociId", nom, cognoms, dni, email, actiu, "dataAlta") FROM stdin;
-1	Arnau	Valls Bermúdez	55078681Y	arnau.valls@gmail.com	t	2024-05-01 14:59:43.93
 2	Laura	Rubio Planes	25783686L	laura84@hotmail.com	t	2024-05-01 14:59:43.935
 3	Iván	Paris Nuñez	25783686L	ivanpn@gmail.com	t	2024-05-01 14:59:43.939
 4	Raquel	Montserrat Costa	29828114N	\N	t	2024-05-01 14:59:43.941
 5	Marta	Canós Iglesias	69110185S	marta.canos@gmail.com	t	2024-05-01 14:59:43.946
 6	Pepe	Pepito	12345678Z	\N	t	2024-05-03 16:35:27.962
+7	Laia	Duran Xortó		xortoJH@hotmail.com	t	2024-05-04 08:05:32.771
+1	Arnau	Valls Bermúdez	55078681Y	arnau.valls@gmail.com	t	2024-05-04 09:16:44.534
 \.
 
 
@@ -312,7 +313,7 @@ SELECT pg_catalog.setval('public."Comissio_comissioId_seq"', 5, true);
 -- Name: QuotaSoci_quotaSociId_seq; Type: SEQUENCE SET; Schema: public; Owner: ateneumaquia
 --
 
-SELECT pg_catalog.setval('public."QuotaSoci_quotaSociId_seq"', 10, true);
+SELECT pg_catalog.setval('public."QuotaSoci_quotaSociId_seq"', 11, true);
 
 
 --
@@ -326,7 +327,7 @@ SELECT pg_catalog.setval('public."Quota_quotaId_seq"', 3, true);
 -- Name: Soci_sociId_seq; Type: SEQUENCE SET; Schema: public; Owner: ateneumaquia
 --
 
-SELECT pg_catalog.setval('public."Soci_sociId_seq"', 6, true);
+SELECT pg_catalog.setval('public."Soci_sociId_seq"', 9, true);
 
 
 --
@@ -403,7 +404,7 @@ ALTER TABLE ONLY public."ComissioSoci"
 --
 
 ALTER TABLE ONLY public."ComissioSoci"
-    ADD CONSTRAINT "ComissioSoci_sociId_fkey" FOREIGN KEY ("sociId") REFERENCES public."Soci"("sociId") ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT "ComissioSoci_sociId_fkey" FOREIGN KEY ("sociId") REFERENCES public."Soci"("sociId") ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -419,7 +420,7 @@ ALTER TABLE ONLY public."QuotaSoci"
 --
 
 ALTER TABLE ONLY public."QuotaSoci"
-    ADD CONSTRAINT "QuotaSoci_sociId_fkey" FOREIGN KEY ("sociId") REFERENCES public."Soci"("sociId") ON UPDATE CASCADE ON DELETE RESTRICT;
+    ADD CONSTRAINT "QuotaSoci_sociId_fkey" FOREIGN KEY ("sociId") REFERENCES public."Soci"("sociId") ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

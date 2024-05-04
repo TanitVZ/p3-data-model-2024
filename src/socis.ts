@@ -43,26 +43,40 @@ router.get(
   "/:id",
   catchErrors(async (req, res) => {
     const { id: sociId } = idParamSchema.parse(req.params);
-    const forum = await db.soci.findUniqueOrThrow({ where: { sociId } });
-    send(res).ok(forum);
+    const soci = await db.soci.findUniqueOrThrow({ where: { sociId } });
+    send(res).ok(soci);
   })
 );
 
 router.post(
   "/",
   catchErrors(async (req, res) => {
-    const data = sociBodySchema.parse(req.body);
-    const soci = await db.soci.create({ data });
+    const sociData = sociBodySchema.parse(req.body);
+    const soci = await db.soci.create({ data : sociData});
     send(res).createOk(soci);
   })
 );
+
+router.put ("/:id" , catchErrors(async (req, res) => {
+  const { id: sociId } = idParamSchema.parse(req.params);
+
+  const updateSoci = await db.soci.update({
+    where : { sociId},
+    data: {
+     nom : req.body.nom || undefined,
+     cognoms : req.body.cognoms || undefined,
+     email : req.body.email || undefined,
+    }
+   });
+   send(res).ok(updateSoci);
+}));
 
 router.delete(
   "/:id",
   catchErrors(async (req, res) => {
     const { id: sociId } = idParamSchema.parse(req.params);
-    const deletedForum = await db.soci.delete({ where: { sociId } });
-    send(res).ok(deletedForum);
+    const deletedSoci = await db.soci.delete({ where: { sociId } });
+    send(res).ok(deletedSoci);
   })
 );
 
