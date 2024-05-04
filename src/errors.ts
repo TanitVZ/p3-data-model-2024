@@ -41,7 +41,8 @@ export const defaultErrorHandler: ErrorRequestHandler = (
     case "NotFoundError":
       return send(res).notFound();
     case "ZodError":
-      return send(res).badRequest(zodErrorMessage(err));
+     // return send(res).badRequest(zodErrorMessage(err));
+     return send(res).badRequest(zodErrorMessage(err));
     default:
       return send(res).internalError(`Internal error.`);
   }

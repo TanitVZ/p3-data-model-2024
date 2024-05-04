@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 
-import socisRouter from "./socis";
+import socisRouter from "./socis"
 import quotesRouter from "./quotes";
 
 import { defaultErrorHandler } from "./errors";

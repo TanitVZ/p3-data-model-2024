@@ -3,7 +3,7 @@ import { db } from "./db";
 import { catchErrors } from "./errors";
 import { send } from "./response";
 import { z } from "zod";
-import { validarDNI } from "./validateCustom";
+import { validarDNI, validarIBAN } from "./validateCustom";
 
 const router = Router();
 
@@ -11,7 +11,7 @@ const idParamSchema = z.object({
   id: z.coerce.number(),
 });
 
-const sociBodySchema = z.object({
+const sociBodySchema = z.object({ 
   nom: z.string().trim().min(2).max(25),
   cognoms: z.string().trim().min(2).max(200),
   dni: z
@@ -21,6 +21,27 @@ const sociBodySchema = z.object({
     .toUpperCase()
     .refine((v) => validarDNI(v), "DNI incorrecte"),
   email: z.string().email("Email incorrecte"),
+});
+
+const sociQuotaBodySchema = z.object({ 
+  nom: z.string().trim().min(2).max(25),
+  cognoms: z.string().trim().min(2).max(200),
+  dni: z
+    .string()
+    .trim()
+    .max(9)
+    .toUpperCase()
+    .refine((v) => validarDNI(v), "DNI incorrecte"),
+  email: z.string().email("Email incorrecte"),
+  quotaSoci: z.object({
+    quantitat: z.coerce.number().min(5),
+    iban: z
+      .string()
+      .length(24)
+      .refine((v) => validarIBAN(v), "IBAN incorrecte"),
+    quotaId: z.coerce.number().max(1),
+   
+  }),
 });
 
 router.get(
@@ -49,6 +70,7 @@ router.get(
   })
 );
 
+/*
 router.post(
   "/",
   catchErrors(async (req, res) => {
@@ -57,6 +79,42 @@ router.post(
     send(res).createOk(soci);
   })
 );
+*/
+ 
+router.post(
+  "/",
+  catchErrors(async (req, res) => {
+    const sociData = sociBodySchema.parse(req.body);
+    const sociQuotaData = sociQuotaBodySchema.parse(req.body);
+    const soci = await db.soci.create({
+      data: {
+        nom: sociQuotaData.nom,
+        cognoms: sociQuotaData.cognoms,
+        dni: sociQuotaData.dni,
+        email: sociQuotaData.email,
+
+        quotaSoci: {
+          create: {
+            quantitat: sociQuotaData.quotaSoci.quantitat,
+            iban: sociQuotaData.quotaSoci.iban,
+            quotaId: sociQuotaData.quotaSoci.quotaId,
+   
+          },
+        },
+      },
+      include: {
+        quotaSoci: true,
+       
+      }
+
+      
+    });
+    console.log(soci);
+    send(res).createOk(soci);
+  })
+);
+
+
 
 router.put(
   "/:id",

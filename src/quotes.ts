@@ -46,7 +46,7 @@ router.get(
 );
 
 router.post(
-  "/:id",
+  "/",
   catchErrors(async (req, res) => {
     const quotaData = quotaBodySchema.parse(req.body);
     const quota = await db.quotaSoci.create({ data: quotaData });
@@ -55,7 +55,7 @@ router.post(
 );
 
 router.put(
-  "/:id",
+  "/id",
   catchErrors(async (req, res) => {
     const { id: quotaSociId } = idParamSchema.parse(req.params);
     console.log(`id:${quotaSociId}`);
