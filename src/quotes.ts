@@ -18,28 +18,55 @@ const quotaBodySchema = z.object({
     .length(24)
     .refine((v) => validarIBAN(v), "IBAN incorrecte"),
   quotaId: z.coerce.number().max(1),
+  sociId: z.coerce.number(),
 });
 
 router.get(
   "/",
   catchErrors(async (req, res) => {
     const quotes = await db.quotaSoci.findMany({
-        select: {
-            soci : {
-                select: {
-                    nom :true,
-                    cognoms: true
-            }
+      select: {
+        soci: {
+          select: {
+            nom: true,
+            cognoms: true,
+          },
         },
         quantitat: true,
-        quota : {
-            select: {
-                nom: true
-            }
-        }
-    }
+        quota: {
+          select: {
+            nom: true,
+          },
+        },
+      },
     });
     send(res).ok(quotes);
+  })
+);
+
+router.post(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const quotaData = quotaBodySchema.parse(req.body);
+    const quota = await db.quotaSoci.create({ data: quotaData });
+    send(res).createOk(quota);
+  })
+);
+
+router.put(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const { id: quotaSociId } = idParamSchema.parse(req.params);
+    console.log(`id:${quotaSociId}`);
+    const updateQuota = await db.quotaSoci.update({
+      where: { quotaSociId },
+      data: {
+        quantitat: req.body.quantitat || undefined,
+        iban: req.body.iban || undefined,
+        quotaId: req.body.iban || undefined,
+      },
+    });
+    send(res).ok(updateQuota);
   })
 );
 
