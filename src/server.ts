@@ -3,6 +3,8 @@ import express from "express";
 import morgan from "morgan";
 
 import socisRouter from "./socis";
+import quotesRouter from "./quotes";
+
 import { defaultErrorHandler } from "./errors";
 
 const app = express();
@@ -12,6 +14,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/socis", socisRouter);
+app.use("/quotes", quotesRouter);
 
 app.use(defaultErrorHandler);
 

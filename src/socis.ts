@@ -12,10 +12,11 @@ const idParamSchema = z.object({
 });
 
 const sociBodySchema = z.object({
-  nom: z.string().min(2).max(25),
-  cognoms: z.string().min(2).max(200),
+  nom: z.string().trim().min(2).max(25),
+  cognoms: z.string().trim().min(2).max(200),
   dni: z
     .string()
+    .trim()
     .max(9)
     .toUpperCase()
     .refine((v) => validarDNI(v), "DNI incorrecte"),
@@ -52,24 +53,27 @@ router.post(
   "/",
   catchErrors(async (req, res) => {
     const sociData = sociBodySchema.parse(req.body);
-    const soci = await db.soci.create({ data : sociData});
+    const soci = await db.soci.create({ data: sociData });
     send(res).createOk(soci);
   })
 );
 
-router.put ("/:id" , catchErrors(async (req, res) => {
-  const { id: sociId } = idParamSchema.parse(req.params);
+router.put(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const { id: sociId } = idParamSchema.parse(req.params);
 
-  const updateSoci = await db.soci.update({
-    where : { sociId},
-    data: {
-     nom : req.body.nom || undefined,
-     cognoms : req.body.cognoms || undefined,
-     email : req.body.email || undefined,
-    }
-   });
-   send(res).ok(updateSoci);
-}));
+    const updateSoci = await db.soci.update({
+      where: { sociId },
+      data: {
+        nom: req.body.nom || undefined,
+        cognoms: req.body.cognoms || undefined,
+        email: req.body.email || undefined,
+      },
+    });
+    send(res).ok(updateSoci);
+  })
+);
 
 router.delete(
   "/:id",
