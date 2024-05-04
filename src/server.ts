@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import morgan from "morgan";
 
-import socisRouter from './socis';
+import socisRouter from "./socis";
 import { defaultErrorHandler } from "./errors";
 
 const app = express();
@@ -15,12 +15,8 @@ app.use("/socis", socisRouter);
 
 app.use(defaultErrorHandler);
 
-const { PORT} = process.env;
+const { PORT } = process.env;
 
 app.listen(PORT, () => {
-
-    console.log(`API socis http://localhost:${PORT}`);
+  console.log(`API socis http://localhost:${PORT}`);
 });
-
-
-

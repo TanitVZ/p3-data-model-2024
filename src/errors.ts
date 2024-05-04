@@ -17,6 +17,9 @@ const zodErrorMessage = (err: ZodError): string => {
     case "invalid_string": {
       return `${message}.`;
     }
+    case "custom": {
+      return `${message}.`;
+    }
     default: {
       return `Input data is wrong.`;
     }

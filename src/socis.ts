@@ -3,6 +3,7 @@ import { db } from "./db";
 import { catchErrors } from "./errors";
 import { send } from "./response";
 import { z } from "zod";
+import { validarDNI } from "./validateCustom";
 
 const router = Router();
 
@@ -12,9 +13,13 @@ const idParamSchema = z.object({
 
 const sociBodySchema = z.object({
   nom: z.string().min(2).max(25),
-  cognoms : z.string().min(2).max(200),
-  dni : z.string().max(9),
-  email : z.string().email('Email incorrecte'),
+  cognoms: z.string().min(2).max(200),
+  dni: z
+    .string()
+    .max(9)
+    .toUpperCase()
+    .refine((v) => validarDNI(v), "DNI incorrecte"),
+  email: z.string().email("Email incorrecte"),
 });
 
 router.get(
@@ -23,9 +28,10 @@ router.get(
     const socis = await db.soci.findMany({
       orderBy: { cognoms: "asc" },
       select: {
+        sociId: true,
         nom: true,
         cognoms: true,
-        dni : true,
+        dni: true,
         email: true,
       },
     });
@@ -48,6 +54,15 @@ router.post(
     const data = sociBodySchema.parse(req.body);
     const soci = await db.soci.create({ data });
     send(res).createOk(soci);
+  })
+);
+
+router.delete(
+  "/:id",
+  catchErrors(async (req, res) => {
+    const { id: sociId } = idParamSchema.parse(req.params);
+    const deletedForum = await db.soci.delete({ where: { sociId } });
+    send(res).ok(deletedForum);
   })
 );
 
