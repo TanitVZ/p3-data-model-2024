@@ -2,9 +2,9 @@
   "name": "p3-data-model-2024",
   "module": "src/server.ts",
   "type": "module",
-    "scripts": {
-      "dev": "bun --hot src/server.ts"
-    },
+  "scripts": {
+    "dev": "bun --hot src/server.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/cors": "^2.8.17",
@@ -19,7 +19,8 @@
     "@prisma/client": "5.13.0",
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "zod": "^3.23.6"
   },
   "prisma": {
     "seed": "bun prisma/seed.ts"

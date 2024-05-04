@@ -1,12 +1,17 @@
 import {Router} from "express";
 import {db} from "./db";
+import { catchErrors } from "./errors";
+import { send } from "./response";
+import { z } from "zod";
 
 const router = Router();
 
+const idParam = z.object({
+  id: z.coerce.number(),
+});
 
-router.get("/", async (req, res) => {
-    try {
-        console.log("hola");
+router.get("/", catchErrors(async (req, res) => {
+        
       const socis = await db.soci.findMany({
         orderBy: { cognoms: "asc" },
         select: {
@@ -16,11 +21,23 @@ router.get("/", async (req, res) => {
           
         },
       });
-      res.status(200).json({ socis });
-    } catch (e) {
-      res.status(500).json({ error: "Internal Error" });
-    }
-  });
+      send(res).ok(socis);
+    
+  })
+);
+
+    router.get(
+      "/:id",
+      catchErrors(async (req, res) => {
+        const { id: sociId } = idParam.parse(req.params);
+        const forum = await db.soci.findUniqueOrThrow({ where: { sociId } });
+        send(res).ok(forum);
+      })
+    );
+    
+
+
+
 
 export default router;
 /*

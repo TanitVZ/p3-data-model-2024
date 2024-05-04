@@ -3,6 +3,7 @@ import express from "express";
 import morgan from "morgan";
 
 import socisRouter from './socis';
+import { defaultErrorHandler } from "./errors";
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/socis", socisRouter);
 
+app.use(defaultErrorHandler);
 
 const { PORT} = process.env;
 
