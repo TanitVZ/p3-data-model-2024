@@ -33,6 +33,7 @@ router.get(
           },
         },
         quantitat: true,
+        iban : true,
         quota: {
           select: {
             nom: true,
@@ -63,7 +64,7 @@ router.put(
       data: {
         quantitat: req.body.quantitat || undefined,
         iban: req.body.iban || undefined,
-        quotaId: req.body.iban || undefined,
+        quotaId: req.body.quotaId || undefined,
       },
     });
     send(res).ok(updateQuota);

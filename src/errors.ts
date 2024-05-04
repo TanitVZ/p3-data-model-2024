@@ -17,6 +17,9 @@ const zodErrorMessage = (err: ZodError): string => {
     case "invalid_string": {
       return `${message}.`;
     }
+    case "invalid_type": {
+      return `${path[0]} ${message}.`;
+    }
     case "custom": {
       return `${message}.`;
     }
@@ -33,6 +36,7 @@ export const defaultErrorHandler: ErrorRequestHandler = (
   next
 ) => {
   console.log(err.name);
+  console.log(err);
   switch (err.name) {
     case "NotFoundError":
       return send(res).notFound();
