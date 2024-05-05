@@ -45,7 +45,8 @@ const sociQuotaBodySchema = z.object({
 
 const sociComissioBodySchema = z.object({
   comissioId: z.array(z.coerce.number()),
-  sociId: z.coerce.number(),
+  sociId: z.coerce.number()
+ 
 });
 
 router.get(
@@ -142,7 +143,6 @@ router.delete(
 router.post(
   "/comissio",
   catchErrors(async (req, res) => {
-    console.log("arribo");
     const sociComissioData = sociComissioBodySchema.parse(req.body);
     const sociComissioDataMap = sociComissioData.comissioId.map((c) => ({
       comissioId: c,
@@ -155,6 +155,42 @@ router.post(
     send(res).createOk(sociComissio);
   })
 );
+
+router.get(
+  "/comissio/:id",
+  catchErrors(async (req, res) => {
+    const { id: comissioId } = idParamSchema.parse(req.params);
+    const comissions = await db.comissioSoci.findMany({
+      where : { comissioId : comissioId},
+      select: {
+        soci: {
+          select: {
+            nom: true,
+            cognoms: true,
+          },
+        },
+        comissio: {
+          select : {
+            nom: true
+          }
+        }
+        
+      }
+    });
+    send(res).ok(comissions);
+  })
+);
+
+
+router.delete(
+  "/comissio/:id",
+  catchErrors(async (req, res) => {
+    const { id: comissioSocisId } = idParamSchema.parse(req.params);
+    const deletedComissioSoci = await db.comissioSoci.delete({ where: { comissioSocisId } });
+    send(res).ok(deletedComissioSoci);
+  })
+);
+
 
 export default router;
 /*
