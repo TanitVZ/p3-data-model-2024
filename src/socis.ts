@@ -218,10 +218,8 @@ router.post(
 
 router.get(
   "/comissio",
-  catchErrors(async (req, res) => {
-    const { id: comissioId } = idParamSchema.parse(req.params);
+  catchErrors(async (req, res) => {   
     const comissions = await db.comissioSoci.findMany({
-      where : { comissioId : comissioId},
       select: {
         soci: {
           select: {
@@ -242,6 +240,8 @@ router.get(
 );
 
 
+
+
 router.delete(
   "/comissio/:id",
   catchErrors(async (req, res) => {
@@ -253,28 +253,3 @@ router.delete(
 
 
 export default router;
-/*
-const socisSenseMail = await db.soci.findMany({
-where: {
-    email: null
-    }
-
-});
-
-const socisTipusQuota = async (quotaId : number) => {
- 
-    const result = await db.quotaSoci.findMany( {
-        where: {
-            quotaId : quotaId
-        }
-
-    })
-    
-    return result;
-};
-
-const result = await socisTipusQuota(1);
-
-console.log(result);
-
-*/
