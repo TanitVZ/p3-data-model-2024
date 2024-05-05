@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "ateneu-api",
     "collectionId": "112fb2c7-bf48-4cab-9d15-f8ca6b00b344",
-    "dateExported": "2024-05-05T17:25:26.990Z",
+    "dateExported": "2024-05-05T18:12:47.609Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -29,23 +29,6 @@
             "created": "2024-05-04T07:03:27.633Z",
             "modified": "2024-05-05T11:19:07.983Z",
             "headers": []
-        },
-        {
-            "_id": "262efd1e-5092-49b3-8c72-6b610dd55598",
-            "colId": "112fb2c7-bf48-4cab-9d15-f8ca6b00b344",
-            "containerId": "",
-            "name": "Afegir soci",
-            "url": "/soci",
-            "method": "POST",
-            "sortNum": 30000,
-            "created": "2024-05-04T08:04:34.137Z",
-            "modified": "2024-05-05T17:22:31.701Z",
-            "headers": [],
-            "body": {
-                "type": "json",
-                "raw": "{\n  \"nom\" : \"Mireia\",\n  \"cognoms\": \"García Puig\",\n  \"dni\" : \"84664147C\",\n  \"email\": \"mgp@gmail.com\"\n  \n}",
-                "form": []
-            }
         },
         {
             "_id": "0668fcde-8494-4081-bf8e-91743046b193",
@@ -169,5 +152,5 @@
             "baseUrl": "http://localhost:8888/socis"
         }
     },
-    "ref": "VkDl-Dm8wuC_NiNZ6PF0MHxliJmRIU7ypwqMn5jnH47BJBtnGgqwGMWD0Z8gWy9fG-wl_Cj-6DkVtsKDkVdaNg"
+    "ref": "VkDl-Dm8wuC_NiNZ6PF0MHIyw6UB8T2ibRhVAcH05ZzHzFFt8lRL-cI_ttQ7j5MUEGfQtP1YwYHLvEbuCB61Iw"
 }

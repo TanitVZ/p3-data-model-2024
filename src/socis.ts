@@ -83,7 +83,7 @@ router.get(
     send(res).ok(soci);
   })
 );
-
+/* NO ES POT AFEGIR UN SOCI SENSE QUOTA
 router.post(
   "/soci",
   catchErrors(async (req, res) => {
@@ -92,6 +92,7 @@ router.post(
     send(res).createOk(soci);
   })
 );
+*/
 
 router.delete(
   "/soci/:id",
