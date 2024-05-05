@@ -181,7 +181,22 @@ router.post(
   })
 );
 
-
+router.put(
+  "/quotes/:id",
+  catchErrors(async (req, res) => {
+    const { id: quotaSociId } = idParamSchema.parse(req.params);
+    console.log(`id:${quotaSociId}`);
+    const updateQuota = await db.quotaSoci.update({
+      where: { quotaSociId },
+      data: {
+        quantitat: req.body.quantitat || undefined,
+        iban: req.body.iban || undefined,
+        quotaId: req.body.quotaId || undefined,
+      },
+    });
+    send(res).ok(updateQuota);
+  })
+);
 
 //COMISSIONS
 
