@@ -11,7 +11,7 @@ const idParamSchema = z.object({
   id: z.coerce.number(),
 });
 
-const sociBodySchema = z.object({ 
+const sociBodySchema = z.object({
   nom: z.string().trim().min(2).max(25),
   cognoms: z.string().trim().min(2).max(200),
   dni: z
@@ -23,7 +23,7 @@ const sociBodySchema = z.object({
   email: z.string().email("Email incorrecte"),
 });
 
-const sociQuotaBodySchema = z.object({ 
+const sociQuotaBodySchema = z.object({
   nom: z.string().trim().min(2).max(25),
   cognoms: z.string().trim().min(2).max(200),
   dni: z
@@ -39,9 +39,13 @@ const sociQuotaBodySchema = z.object({
       .string()
       .length(24)
       .refine((v) => validarIBAN(v), "IBAN incorrecte"),
-    quotaId: z.coerce.number().max(1),
-   
+    quotaId: z.coerce.number(),
   }),
+});
+
+const sociComissioBodySchema = z.object({
+  comissioId: z.array(z.coerce.number()),
+  sociId: z.coerce.number(),
 });
 
 router.get(
@@ -52,7 +56,6 @@ router.get(
       select: {
         sociId: true,
         nom: true,
-        cognoms: true,
         dni: true,
         email: true,
       },
@@ -70,7 +73,6 @@ router.get(
   })
 );
 
-/*
 router.post(
   "/",
   catchErrors(async (req, res) => {
@@ -79,10 +81,9 @@ router.post(
     send(res).createOk(soci);
   })
 );
-*/
- 
+
 router.post(
-  "/",
+  "/quotes",
   catchErrors(async (req, res) => {
     const sociData = sociBodySchema.parse(req.body);
     const sociQuotaData = sociQuotaBodySchema.parse(req.body);
@@ -98,23 +99,17 @@ router.post(
             quantitat: sociQuotaData.quotaSoci.quantitat,
             iban: sociQuotaData.quotaSoci.iban,
             quotaId: sociQuotaData.quotaSoci.quotaId,
-   
           },
         },
       },
       include: {
         quotaSoci: true,
-       
-      }
-
-      
+      },
     });
-    console.log(soci);
+
     send(res).createOk(soci);
   })
 );
-
-
 
 router.put(
   "/:id",
@@ -139,6 +134,25 @@ router.delete(
     const { id: sociId } = idParamSchema.parse(req.params);
     const deletedSoci = await db.soci.delete({ where: { sociId } });
     send(res).ok(deletedSoci);
+  })
+);
+
+//COMISSIONS
+
+router.post(
+  "/comissio",
+  catchErrors(async (req, res) => {
+    console.log("arribo");
+    const sociComissioData = sociComissioBodySchema.parse(req.body);
+    const sociComissioDataMap = sociComissioData.comissioId.map((c) => ({
+      comissioId: c,
+      sociId: sociComissioData.sociId,
+    }));
+    console.log(sociComissioDataMap);
+    const sociComissio = await db.comissioSoci.createMany({
+      data: sociComissioDataMap,
+    });
+    send(res).createOk(sociComissio);
   })
 );
 
