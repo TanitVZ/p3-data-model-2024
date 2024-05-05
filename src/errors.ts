@@ -4,9 +4,9 @@ import type { ZodError } from "zod";
 
 const zodErrorMessage = (err: ZodError): string => {
   const [firstIssue] = err.issues;
-  console.log(err.issues);
+  // console.log(err.issues);
   const { code, path, message } = firstIssue;
-  console.log(`Zod error:${code}`);
+  // console.log(`Zod error:${code}`);
   switch (code) {
     case "too_small": {
       return `${path[0]} massa petit.`;
@@ -35,14 +35,14 @@ export const defaultErrorHandler: ErrorRequestHandler = (
   res,
   next
 ) => {
-  console.log(err.name);
-  console.log(err);
+  //console.log(err.name);
+  //console.log(err);
   switch (err.name) {
     case "NotFoundError":
       return send(res).notFound();
     case "ZodError":
-     // return send(res).badRequest(zodErrorMessage(err));
-     return send(res).badRequest(zodErrorMessage(err));
+      // return send(res).badRequest(zodErrorMessage(err));
+      return send(res).badRequest(zodErrorMessage(err));
     default:
       return send(res).internalError(`Internal error.`);
   }

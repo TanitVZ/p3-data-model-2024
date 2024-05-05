@@ -33,7 +33,6 @@ const quotaBodySchema = z.object({
   sociId: z.coerce.number(),
 });
 
-
 const sociQuotaBodySchema = z.object({
   nom: z.string().trim().min(2).max(25),
   cognoms: z.string().trim().min(2).max(200),
@@ -56,10 +55,8 @@ const sociQuotaBodySchema = z.object({
 
 const sociComissioBodySchema = z.object({
   comissioId: z.array(z.coerce.number()),
-  sociId: z.coerce.number()
- 
+  sociId: z.coerce.number(),
 });
-
 
 router.get(
   "/soci",
@@ -69,14 +66,13 @@ router.get(
       select: {
         sociId: true,
         nom: true,
-        dni: true, 
+        dni: true,
         email: true,
       },
     });
     send(res).ok(socis);
   })
 );
-
 
 //SOCIS
 router.get(
@@ -96,7 +92,7 @@ router.post(
     send(res).createOk(soci);
   })
 );
- 
+
 router.delete(
   "/soci/:id",
   catchErrors(async (req, res) => {
@@ -123,16 +119,14 @@ router.put(
   })
 );
 
-
 //QUOTES
 
 router.get(
   "/quotes",
   catchErrors(async (req, res) => {
-    console.log(req.originalUrl);
     const quotes = await db.quotaSoci.findMany({
       select: {
-        quotaSociId: true, 
+        quotaSociId: true,
         soci: {
           select: {
             nom: true,
@@ -140,7 +134,7 @@ router.get(
           },
         },
         quantitat: true,
-        iban : true,
+        iban: true,
         quota: {
           select: {
             nom: true,
@@ -208,7 +202,7 @@ router.post(
       comissioId: c,
       sociId: sociComissioData.sociId,
     }));
-    console.log(sociComissioDataMap);
+
     const sociComissio = await db.comissioSoci.createMany({
       data: sociComissioDataMap,
     });
@@ -218,7 +212,7 @@ router.post(
 
 router.get(
   "/comissio",
-  catchErrors(async (req, res) => {   
+  catchErrors(async (req, res) => {
     const comissions = await db.comissioSoci.findMany({
       select: {
         soci: {
@@ -228,28 +222,25 @@ router.get(
           },
         },
         comissio: {
-          select : {
-            nom: true
-          }
-        }
-        
-      }
+          select: {
+            nom: true,
+          },
+        },
+      },
     });
     send(res).ok(comissions);
   })
 );
 
-
-
-
 router.delete(
   "/comissio/:id",
   catchErrors(async (req, res) => {
     const { id: comissioSocisId } = idParamSchema.parse(req.params);
-    const deletedComissioSoci = await db.comissioSoci.delete({ where: { comissioSocisId } });
+    const deletedComissioSoci = await db.comissioSoci.delete({
+      where: { comissioSocisId },
+    });
     send(res).ok(deletedComissioSoci);
   })
 );
-
 
 export default router;

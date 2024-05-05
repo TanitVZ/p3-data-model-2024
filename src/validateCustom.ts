@@ -19,32 +19,26 @@ export const validarDNI = (dni: string) => {
   return true;
 };
 
-
-
 export const validarIBAN = (iban: string) => {
-  
-  iban = iban.replace(/\s+/g, '').toUpperCase();
+  iban = iban.replace(/\s+/g, "").toUpperCase();
 
   if (iban.length < 4 || iban.length > 34) {
-      return false;
+    return false;
   }
 
   if (!/^[A-Z]{2}\d{2}[A-Z\d]+$/.test(iban)) {
-      return false;
-  } 
+    return false;
+  }
 
- 
   const ibanFormat = iban.slice(4) + iban.slice(0, 4);
 
-
-  const ibanNum = [...ibanFormat].map(char => {
+  const ibanNum = [...ibanFormat]
+    .map((char) => {
       return char.match(/[A-Z]/) ? char.charCodeAt(0) - 55 : char;
-  }).join('');
-  
+    })
+    .join("");
 
   const mod97 = BigInt(ibanNum) % 97n;
 
   return mod97 === 1n;
 };
-
-

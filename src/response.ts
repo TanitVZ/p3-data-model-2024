@@ -10,7 +10,6 @@ enum HttpStatusCode {
 }
 
 export const send = (res: ExpressResponse) => {
-  console.log("send f");
   return {
     ok: (data: any) => res.status(HttpStatusCode.OK).json(data),
     createOk: (data: any) => res.status(HttpStatusCode.Created).send(data),

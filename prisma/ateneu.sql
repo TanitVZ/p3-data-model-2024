@@ -252,6 +252,11 @@ COPY public."Comissio" ("comissioId", nom) FROM stdin;
 --
 
 COPY public."ComissioSoci" ("comissioSocisId", "comissioId", "sociId") FROM stdin;
+1	1	1
+2	2	1
+3	3	1
+5	2	2
+6	2	2
 \.
 
 
@@ -275,8 +280,8 @@ COPY public."QuotaSoci" ("quotaSociId", quantitat, iban, "quotaId", "sociId") FR
 3	15	ES9031834039978422822928	2	3
 4	15	ES1520956067347973178439	2	4
 5	30	ES8502412465310302229896	2	5
-10	30	aaaaaaa	3	6
-1	60	ES4302378064573129048238	1	1
+1	30	ES0620952995126669338708	1	1
+19	30	ES7801289845964173342132	3	22
 \.
 
 
@@ -289,9 +294,8 @@ COPY public."Soci" ("sociId", nom, cognoms, dni, email, actiu, "dataAlta") FROM 
 3	Iván	Paris Nuñez	25783686L	ivanpn@gmail.com	t	2024-05-01 14:59:43.939
 4	Raquel	Montserrat Costa	29828114N	\N	t	2024-05-01 14:59:43.941
 5	Marta	Canós Iglesias	69110185S	marta.canos@gmail.com	t	2024-05-01 14:59:43.946
-6	Pepe	Pepito	12345678Z	\N	t	2024-05-03 16:35:27.962
-7	Laia	Duran Xortó		xortoJH@hotmail.com	t	2024-05-04 08:05:32.771
-1	Arnau	Valls Bermúdez	55078681Y	arnau.valls@gmail.com	t	2024-05-04 09:16:44.534
+1	Arnau	Valls Bermúdez	55078681Y	arnau.mer@gmail.com	t	2024-05-04 09:16:44.534
+22	Laia	Durán Xortó	55318423L	l.duran@gmail.com	t	2024-05-05 17:15:21.793
 \.
 
 
@@ -299,7 +303,7 @@ COPY public."Soci" ("sociId", nom, cognoms, dni, email, actiu, "dataAlta") FROM 
 -- Name: ComissioSoci_comissioSocisId_seq; Type: SEQUENCE SET; Schema: public; Owner: ateneumaquia
 --
 
-SELECT pg_catalog.setval('public."ComissioSoci_comissioSocisId_seq"', 1, false);
+SELECT pg_catalog.setval('public."ComissioSoci_comissioSocisId_seq"', 6, true);
 
 
 --
@@ -313,7 +317,7 @@ SELECT pg_catalog.setval('public."Comissio_comissioId_seq"', 5, true);
 -- Name: QuotaSoci_quotaSociId_seq; Type: SEQUENCE SET; Schema: public; Owner: ateneumaquia
 --
 
-SELECT pg_catalog.setval('public."QuotaSoci_quotaSociId_seq"', 11, true);
+SELECT pg_catalog.setval('public."QuotaSoci_quotaSociId_seq"', 19, true);
 
 
 --
@@ -327,7 +331,7 @@ SELECT pg_catalog.setval('public."Quota_quotaId_seq"', 3, true);
 -- Name: Soci_sociId_seq; Type: SEQUENCE SET; Schema: public; Owner: ateneumaquia
 --
 
-SELECT pg_catalog.setval('public."Soci_sociId_seq"', 9, true);
+SELECT pg_catalog.setval('public."Soci_sociId_seq"', 22, true);
 
 
 --
