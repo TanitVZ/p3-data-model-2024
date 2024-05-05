@@ -2,7 +2,7 @@
     "clientName": "Thunder Client",
     "collectionName": "ateneu-api",
     "collectionId": "112fb2c7-bf48-4cab-9d15-f8ca6b00b344",
-    "dateExported": "2024-05-05T18:12:47.609Z",
+    "dateExported": "2024-05-05T18:48:44.871Z",
     "version": "1.2",
     "folders": [],
     "requests": [
@@ -35,23 +35,23 @@
             "colId": "112fb2c7-bf48-4cab-9d15-f8ca6b00b344",
             "containerId": "",
             "name": "Eliminar soci",
-            "url": "/soci/7",
+            "url": "/soci/4",
             "method": "DELETE",
             "sortNum": 40000,
             "created": "2024-05-04T08:39:26.500Z",
-            "modified": "2024-05-05T17:15:08.768Z",
+            "modified": "2024-05-05T18:45:06.647Z",
             "headers": []
         },
         {
             "_id": "c092ed77-2408-41d9-8330-e4961cf2910c",
             "colId": "112fb2c7-bf48-4cab-9d15-f8ca6b00b344",
             "containerId": "",
-            "name": "Modicar soci",
-            "url": "/soci/13",
+            "name": "Modificar soci",
+            "url": "/soci/3",
             "method": "PUT",
             "sortNum": 50000,
             "created": "2024-05-04T10:54:55.462Z",
-            "modified": "2024-05-05T17:21:24.733Z",
+            "modified": "2024-05-05T18:42:39.890Z",
             "headers": [],
             "body": {
                 "type": "json",
@@ -126,7 +126,7 @@
             "method": "POST",
             "sortNum": 140000,
             "created": "2024-05-05T09:38:25.234Z",
-            "modified": "2024-05-05T17:21:31.362Z",
+            "modified": "2024-05-05T18:47:56.094Z",
             "headers": [],
             "body": {
                 "type": "json",
@@ -139,11 +139,11 @@
             "colId": "112fb2c7-bf48-4cab-9d15-f8ca6b00b344",
             "containerId": "",
             "name": "Eliminar comissio soci",
-            "url": "/socis/comissio/5",
+            "url": "/comissio/2",
             "method": "DELETE",
             "sortNum": 160000,
             "created": "2024-05-05T10:17:30.465Z",
-            "modified": "2024-05-05T17:22:27.973Z",
+            "modified": "2024-05-05T18:48:07.971Z",
             "headers": []
         }
     ],
@@ -152,5 +152,5 @@
             "baseUrl": "http://localhost:8888/socis"
         }
     },
-    "ref": "VkDl-Dm8wuC_NiNZ6PF0MHIyw6UB8T2ibRhVAcH05ZzHzFFt8lRL-cI_ttQ7j5MUEGfQtP1YwYHLvEbuCB61Iw"
+    "ref": "VkDl-Dm8wuC_NiNZ6PF0MHIyw6UB8T2ibRhVAcH05ZxyrIDFXZmEsMyJsEzO719Hcum52KlaRk3zaNdwBbnJPA"
 }

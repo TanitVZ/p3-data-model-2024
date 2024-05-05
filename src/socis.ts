@@ -11,27 +11,7 @@ const idParamSchema = z.object({
   id: z.coerce.number(),
 });
 
-const sociBodySchema = z.object({
-  nom: z.string().trim().min(2).max(25),
-  cognoms: z.string().trim().min(2).max(200),
-  dni: z
-    .string()
-    .trim()
-    .max(9)
-    .toUpperCase()
-    .refine((v) => validarDNI(v), "DNI incorrecte"),
-  email: z.string().email("Email incorrecte"),
-});
 
-const quotaBodySchema = z.object({
-  quantitat: z.coerce.number().min(5),
-  iban: z
-    .string()
-    .length(24)
-    .refine((v) => validarIBAN(v), "IBAN incorrecte"),
-  quotaId: z.coerce.number().max(1),
-  sociId: z.coerce.number(),
-});
 
 const sociQuotaBodySchema = z.object({
   nom: z.string().trim().min(2).max(25),
@@ -83,16 +63,7 @@ router.get(
     send(res).ok(soci);
   })
 );
-/* NO ES POT AFEGIR UN SOCI SENSE QUOTA
-router.post(
-  "/soci",
-  catchErrors(async (req, res) => {
-    const sociData = sociBodySchema.parse(req.body);
-    const soci = await db.soci.create({ data: sociData });
-    send(res).createOk(soci);
-  })
-);
-*/
+
 
 router.delete(
   "/soci/:id",
@@ -150,7 +121,6 @@ router.get(
 router.post(
   "/quotes",
   catchErrors(async (req, res) => {
-    const sociData = sociBodySchema.parse(req.body);
     const sociQuotaData = sociQuotaBodySchema.parse(req.body);
     const soci = await db.soci.create({
       data: {
