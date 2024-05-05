@@ -14,7 +14,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 app.use("/socis", socisRouter);
-//app.use("/quotes", quotesRouter);
 
 app.use(defaultErrorHandler);
 

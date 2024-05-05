@@ -23,6 +23,17 @@ const sociBodySchema = z.object({
   email: z.string().email("Email incorrecte"),
 });
 
+const quotaBodySchema = z.object({
+  quantitat: z.coerce.number().min(5),
+  iban: z
+    .string()
+    .length(24)
+    .refine((v) => validarIBAN(v), "IBAN incorrecte"),
+  quotaId: z.coerce.number().max(1),
+  sociId: z.coerce.number(),
+});
+
+
 const sociQuotaBodySchema = z.object({
   nom: z.string().trim().min(2).max(25),
   cognoms: z.string().trim().min(2).max(200),
@@ -49,15 +60,16 @@ const sociComissioBodySchema = z.object({
  
 });
 
+
 router.get(
-  "/",
+  "/soci",
   catchErrors(async (req, res) => {
     const socis = await db.soci.findMany({
       orderBy: { cognoms: "asc" },
       select: {
         sociId: true,
         nom: true,
-        dni: true,
+        dni: true, 
         email: true,
       },
     });
@@ -65,8 +77,10 @@ router.get(
   })
 );
 
+
+//SOCIS
 router.get(
-  "/:id",
+  "/soci/:id",
   catchErrors(async (req, res) => {
     const { id: sociId } = idParamSchema.parse(req.params);
     const soci = await db.soci.findUniqueOrThrow({ where: { sociId } });
@@ -75,11 +89,66 @@ router.get(
 );
 
 router.post(
-  "/",
+  "/soci",
   catchErrors(async (req, res) => {
     const sociData = sociBodySchema.parse(req.body);
     const soci = await db.soci.create({ data: sociData });
     send(res).createOk(soci);
+  })
+);
+
+router.delete(
+  "/soci/:id",
+  catchErrors(async (req, res) => {
+    const { id: sociId } = idParamSchema.parse(req.params);
+    const deletedSoci = await db.soci.delete({ where: { sociId } });
+    send(res).ok(deletedSoci);
+  })
+);
+
+router.put(
+  "/soci/:id",
+  catchErrors(async (req, res) => {
+    const { id: sociId } = idParamSchema.parse(req.params);
+
+    const updateSoci = await db.soci.update({
+      where: { sociId },
+      data: {
+        nom: req.body.nom || undefined,
+        cognoms: req.body.cognoms || undefined,
+        email: req.body.email || undefined,
+      },
+    });
+    send(res).ok(updateSoci);
+  })
+);
+
+
+//QUOTES
+
+router.get(
+  "/quotes",
+  catchErrors(async (req, res) => {
+    console.log(req.originalUrl);
+    const quotes = await db.quotaSoci.findMany({
+      select: {
+        quotaSociId: true, 
+        soci: {
+          select: {
+            nom: true,
+            cognoms: true,
+          },
+        },
+        quantitat: true,
+        iban : true,
+        quota: {
+          select: {
+            nom: true,
+          },
+        },
+      },
+    });
+    send(res).ok(quotes);
   })
 );
 
@@ -112,31 +181,7 @@ router.post(
   })
 );
 
-router.put(
-  "/:id",
-  catchErrors(async (req, res) => {
-    const { id: sociId } = idParamSchema.parse(req.params);
 
-    const updateSoci = await db.soci.update({
-      where: { sociId },
-      data: {
-        nom: req.body.nom || undefined,
-        cognoms: req.body.cognoms || undefined,
-        email: req.body.email || undefined,
-      },
-    });
-    send(res).ok(updateSoci);
-  })
-);
-
-router.delete(
-  "/:id",
-  catchErrors(async (req, res) => {
-    const { id: sociId } = idParamSchema.parse(req.params);
-    const deletedSoci = await db.soci.delete({ where: { sociId } });
-    send(res).ok(deletedSoci);
-  })
-);
 
 //COMISSIONS
 
@@ -157,7 +202,7 @@ router.post(
 );
 
 router.get(
-  "/comissio/:id",
+  "/comissio",
   catchErrors(async (req, res) => {
     const { id: comissioId } = idParamSchema.parse(req.params);
     const comissions = await db.comissioSoci.findMany({
