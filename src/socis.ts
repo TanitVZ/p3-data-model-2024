@@ -96,7 +96,7 @@ router.post(
     send(res).createOk(soci);
   })
 );
-
+ 
 router.delete(
   "/soci/:id",
   catchErrors(async (req, res) => {
