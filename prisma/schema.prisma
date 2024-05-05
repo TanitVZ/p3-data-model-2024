@@ -8,42 +8,43 @@ datasource db {
 }
 
 model Soci {
-  sociId      Int            @id @default(autoincrement())
-  nom         String
-  cognoms     String
-  dni         String         @db.VarChar(9)
-  email       String?
-  actiu       Boolean        @default(true)
-  dataAlta    DateTime       @default(now())
-  comissions  ComissioSoci[]
-  quotaSoci   QuotaSoci      @relation(fields: [quotaSociId], references: [quotaSociId])
-  quotaSociId Int
+  sociId     Int            @id @default(autoincrement())
+  nom        String
+  cognoms    String
+  dni        String         @db.VarChar(9)
+  email      String?
+  actiu      Boolean        @default(true)
+  dataAlta   DateTime       @default(now())
+  comissions ComissioSoci[]
+  quotaSoci  QuotaSoci?
 }
 
 model Quota {
   quotaId   Int         @id @default(autoincrement())
-  desc      String      @unique
+  nom       String      @unique
   quotaSoci QuotaSoci[]
 }
 
 model QuotaSoci {
   quotaSociId Int    @id @default(autoincrement())
-  sociId      Int    @unique
-  quotaId     Int    @unique
   quantitat   Int
   iban        String @db.VarChar(24)
+  quotaId     Int
+  sociId      Int    @unique
   quota       Quota  @relation(fields: [quotaId], references: [quotaId])
-  soci Soci[]
+  soci        Soci   @relation(fields: [sociId], references: [sociId], onDelete: Cascade)
 }
 
 model Comissio {
-  comissioId Int    @id @default(autoincrement())
-  desc       String @unique
+  comissioId   Int            @id @default(autoincrement())
+  nom          String         @unique
+  comissioSoci ComissioSoci[]
 }
 
 model ComissioSoci {
-  comissioSocisId Int  @id @default(autoincrement())
+  comissioSocisId Int      @id @default(autoincrement())
   comissioId      Int
   sociId          Int
-  sociComissio    Soci @relation(fields: [sociId], references: [sociId])
+  comissio        Comissio @relation(fields: [comissioId], references: [comissioId])
+  soci            Soci     @relation(fields: [sociId], references: [sociId], onDelete: Cascade)
 }
